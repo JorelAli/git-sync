@@ -11,22 +11,108 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Parser implements ParserConstants {
 
-        public static void parse(String input) throws ParseException {
+        public static DirectoryStructure parse(String input) throws ParseException {
                 InputStream inputStream = new ByteArrayInputStream(input.getBytes(Charset.forName("UTF-8")));
-                new Parser(inputStream).input();
+                return new Parser(inputStream).input();
         }
 
 /** Main endpoint */
-  final public void input() throws ParseException {
-    sample();
+  final public DirectoryStructure input() throws ParseException {String domain; List<Repository> repos; Subdirectory d; List<Subdirectory> subDirs = new ArrayList<Subdirectory>();
+    domain = domain();
+    repos = repos();
+    label_1:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case INSIDE:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[0] = jj_gen;
+        break label_1;
+      }
+      d = inside();
+subDirs.add(d);
+    }
     jj_consume_token(0);
+{if ("" != null) return new DirectoryStructure(domain, repos, subDirs);}
+    throw new Error("Missing return statement in function");
   }
 
-  final public void sample() throws ParseException {
-    jj_consume_token(OPENBRACKET);
-    jj_consume_token(IF);
-    jj_consume_token(VARIABLE);
-    jj_consume_token(CLOSEBRACKET);
+  final public Repository repo() throws ParseException {boolean hidden; Token name;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case PLUS:{
+      jj_consume_token(PLUS);
+hidden = false;
+      break;
+      }
+    case MINUS:{
+      jj_consume_token(MINUS);
+hidden = true;
+      break;
+      }
+    default:
+      jj_la1[1] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    name = jj_consume_token(NAME);
+{if ("" != null) return new Repository(name.image, hidden);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public Subdirectory inside() throws ParseException {Token t; List<Repository> repos;
+    jj_consume_token(INSIDE);
+    t = jj_consume_token(NAME);
+    jj_consume_token(OPENCBRACKET);
+    repos = repos();
+    jj_consume_token(CLOSECBRACKET);
+{if ("" != null) return new Subdirectory(t.image, repos);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public List<Repository> repos() throws ParseException {Repository repo; List<Repository> repos = new ArrayList<Repository>();
+    label_2:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case PLUS:
+      case MINUS:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[2] = jj_gen;
+        break label_2;
+      }
+      repo = repo();
+repos.add(repo);
+    }
+{if ("" != null) return repos;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public String domain() throws ParseException {StringBuilder builder = new StringBuilder(); Token t;
+    jj_consume_token(USING);
+    jj_consume_token(DOMAIN);
+    jj_consume_token(QUOTE);
+    label_3:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case CHAR:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[3] = jj_gen;
+        break label_3;
+      }
+      t = jj_consume_token(CHAR);
+builder.append(t.image);
+    }
+    jj_consume_token(ENDQUOTE);
+    jj_consume_token(SEMICOLON);
+{if ("" != null) return builder.toString();}
+    throw new Error("Missing return statement in function");
   }
 
   /** Generated Token Manager. */
@@ -38,13 +124,13 @@ public class Parser implements ParserConstants {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[0];
+  final private int[] jj_la1 = new int[4];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {};
+      jj_la1_0 = new int[] {0x100,0x6,0x6,0x1000,};
    }
 
   /** Constructor with InputStream. */
@@ -58,6 +144,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -71,7 +158,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 0; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -81,6 +168,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -98,6 +186,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -106,6 +195,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -114,6 +204,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
+    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -164,12 +255,12 @@ public class Parser implements ParserConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[10];
+    boolean[] la1tokens = new boolean[18];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 0; i++) {
+    for (int i = 0; i < 4; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -178,7 +269,7 @@ public class Parser implements ParserConstants {
         }
       }
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 18; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

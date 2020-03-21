@@ -1,0 +1,57 @@
+using domain "https://github.com/AnachronisticTech/";
+
+- Clibgit2
+- Escape-Unity
+- git-sync
+- Psakse-Flutter
+- Psakse-Windows
+- Stories
+- SwiftGit2
+- Transferwise_Bootcamp
+
+inside Android {
+    - Psakse-Android
+}
+
+inside Shotcut {
+    - TheNewAge-Intro-Shotcut
+    - TheNewAge-Outro-Shotcut
+}
+
+inside University {
+    - CS141-Coursework-1
+    - CS141-Coursework-2
+    - CS255-Coursework-2
+    - CS259-Coursework
+    - CS262-Coursework
+    - CS310-Project
+    - CS313-Labs
+    - CS324-Coursework
+    - CS324-Labs
+    - CS342-Labs
+    - CS347-Coursework
+}
+
+inside Unreal {
+    - BuildingEscape-Original-Unreal
+    - BullCowGame-Unreal
+    - PuzzlePlatforms-Unreal
+    - Reflections-Unreal
+    - Tank-Bash-Unreal
+    - TestingGrounds-Original-Unreal
+    - Warwick-Taxi-Unreal
+}
+
+inside Web {
+    + plannerboard_v2
+    - Pool-Tracker-Server-Node.js
+    - Video-Library-Client-Vue.js
+    - Video-Library-Server-Node.js
+}
+
+inside Xcode {
+    + Waypoint-iOS
+    - Pool-Tracker-Client-iOS
+    - Psakse
+    - Psakse-MacOS
+}

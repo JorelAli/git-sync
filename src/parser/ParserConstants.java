@@ -11,29 +11,55 @@ public interface ParserConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int OPENBRACKET = 1;
+  int PLUS = 1;
   /** RegularExpression Id. */
-  int CLOSEBRACKET = 2;
+  int MINUS = 2;
   /** RegularExpression Id. */
-  int IF = 3;
+  int OPENCBRACKET = 3;
   /** RegularExpression Id. */
-  int VARIABLE = 4;
+  int CLOSECBRACKET = 4;
+  /** RegularExpression Id. */
+  int SEMICOLON = 5;
+  /** RegularExpression Id. */
+  int USING = 6;
+  /** RegularExpression Id. */
+  int DOMAIN = 7;
+  /** RegularExpression Id. */
+  int INSIDE = 8;
+  /** RegularExpression Id. */
+  int NAME = 9;
+  /** RegularExpression Id. */
+  int QUOTE = 10;
+  /** RegularExpression Id. */
+  int ENDQUOTE = 11;
+  /** RegularExpression Id. */
+  int CHAR = 12;
 
   /** Lexical state. */
   int DEFAULT = 0;
+  /** Lexical state. */
+  int STRING_STATE = 1;
 
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
-    "\"(\"",
-    "\")\"",
-    "\"if\"",
-    "<VARIABLE>",
+    "\"+\"",
+    "\"-\"",
+    "\"{\"",
+    "\"}\"",
+    "\";\"",
+    "\"using\"",
+    "\"domain\"",
+    "\"inside\"",
+    "<NAME>",
+    "\"\\\"\"",
+    "<ENDQUOTE>",
+    "<CHAR>",
     "\"\\n\"",
     "\"\\r\"",
     "\" \"",
     "\"\\t\"",
-    "<token of kind 9>",
+    "<token of kind 17>",
   };
 
 }

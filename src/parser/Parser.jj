@@ -15,9 +15,9 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Parser {
 	
-	public static void parse(String input) throws ParseException {
+	public static DirectoryStructure parse(String input) throws ParseException {
 		InputStream inputStream = new ByteArrayInputStream(input.getBytes(Charset.forName("UTF-8")));
-		new Parser(inputStream).input();
+		return new Parser(inputStream).input();
 	}
 	
 }
@@ -25,28 +25,76 @@ public class Parser {
 PARSER_END(Parser)
 
 //Symbols
-TOKEN : { < OPENBRACKET : "(" > }
-TOKEN : { < CLOSEBRACKET : ")" > }
+TOKEN : { < PLUS : "+" > }
+TOKEN : { < MINUS : "-" > }
+TOKEN : { < OPENCBRACKET : "{" > }
+TOKEN : { < CLOSECBRACKET : "}" > }
+TOKEN : { < SEMICOLON : ";" > }
 
 //Keywords
-TOKEN : { < IF : "if" > }
+TOKEN : { < USING : "using" > }
+TOKEN : { < DOMAIN : "domain" > }
+TOKEN : { < INSIDE : "inside" > }
 
 //Other
-TOKEN : { < VARIABLE : ["A"-"Z", "a"-"z", "_"] (["A"-"Z", "a"-"z", "0"-"9", "_", "."])* (["\'"])* > }
+TOKEN : { < NAME : (["A"-"Z", "a"-"z", "0"-"9", "_", "-", "."])+ > }
+
+TOKEN : { < QUOTE : "\"" > : STRING_STATE }
+
+<STRING_STATE> TOKEN: {
+  < ENDQUOTE : <QUOTE> > : DEFAULT | < CHAR : ~["\""] >
+}
 
 //Whitespace & Comments
 SKIP : { "\n" | "\r" | " " | "\t" }
 SKIP : { < "#" (~["\r", "\n"])* > }
 
 /** Main endpoint */
-void input() : { } {
-  	sample()
+DirectoryStructure input() : { String domain; List<Repository> repos; Subdirectory d; List<Subdirectory> subDirs = new ArrayList<Subdirectory>(); } {
+  	domain = domain()
+  	repos = repos()
+  	(
+  	  d = inside()
+  	  { subDirs.add(d); }
+  	)*
 	<EOF>
+	{ return new DirectoryStructure(domain, repos, subDirs); }
 }
 
-void sample() : { } {
-  	< OPENBRACKET >
-  	< IF >
-  	< VARIABLE >
-  	< CLOSEBRACKET >
+Repository repo() : { boolean hidden; Token name;} {
+	( < PLUS >  { hidden = false; }
+	| < MINUS > { hidden = true; }
+	)
+	name = < NAME >
+	{ return new Repository(name.image, hidden); }
+}
+
+Subdirectory inside() : { Token t; List<Repository> repos; } {
+	< INSIDE >
+	t = < NAME >
+	< OPENCBRACKET >
+	repos = repos()
+	< CLOSECBRACKET >
+	{ return new Subdirectory(t.image, repos); }
+}
+
+List<Repository> repos() : { Repository repo; List<Repository> repos = new ArrayList<Repository>(); } {
+	(
+	  repo = repo()
+	  { repos.add(repo); }
+	)*
+	{ return repos; }
+}
+
+String domain() : { StringBuilder builder = new StringBuilder(); Token t;} {
+	< USING >
+	< DOMAIN >
+	< QUOTE >
+	(
+	  t = < CHAR >
+	  { builder.append(t.image); }
+	)*
+	< ENDQUOTE >
+	< SEMICOLON >
+	{ return builder.toString(); }
 }

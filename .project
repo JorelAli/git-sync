@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Parser</name>
-	<comment></comment>
+	<name>git-sync</name>
+	<comment>Project git-sync created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
