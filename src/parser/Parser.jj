@@ -69,13 +69,16 @@ Repository repo() : { boolean hidden; Token name;} {
 	{ return new Repository(name.image, hidden); }
 }
 
-Subdirectory inside() : { Token t; List<Repository> repos; } {
+Subdirectory inside() : { Token t; List<Repository> repos; Subdirectory sd; List<Subdirectory> nested = new ArrayList<Subdirectory>(); } {
 	< INSIDE >
 	t = < NAME >
 	< OPENCBRACKET >
 	repos = repos()
+	(sd = inside()
+{ nested.add(sd);
+})*
 	< CLOSECBRACKET >
-	{ return new Subdirectory(t.image, repos); }
+	{ return new Subdirectory(t.image, repos, nested); }
 }
 
 List<Repository> repos() : { Repository repo; List<Repository> repos = new ArrayList<Repository>(); } {

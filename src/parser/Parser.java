@@ -61,18 +61,32 @@ hidden = true;
     throw new Error("Missing return statement in function");
   }
 
-  final public Subdirectory inside() throws ParseException {Token t; List<Repository> repos;
+  final public Subdirectory inside() throws ParseException {Token t; List<Repository> repos; Subdirectory sd; List<Subdirectory> nested = new ArrayList<Subdirectory>();
     jj_consume_token(INSIDE);
     t = jj_consume_token(NAME);
     jj_consume_token(OPENCBRACKET);
     repos = repos();
+    label_2:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case INSIDE:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[2] = jj_gen;
+        break label_2;
+      }
+      sd = inside();
+nested.add(sd);
+    }
     jj_consume_token(CLOSECBRACKET);
-{if ("" != null) return new Subdirectory(t.image, repos);}
+{if ("" != null) return new Subdirectory(t.image, repos, nested);}
     throw new Error("Missing return statement in function");
   }
 
   final public List<Repository> repos() throws ParseException {Repository repo; List<Repository> repos = new ArrayList<Repository>();
-    label_2:
+    label_3:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case PLUS:
@@ -81,8 +95,8 @@ hidden = true;
         break;
         }
       default:
-        jj_la1[2] = jj_gen;
-        break label_2;
+        jj_la1[3] = jj_gen;
+        break label_3;
       }
       repo = repo();
 repos.add(repo);
@@ -95,7 +109,7 @@ repos.add(repo);
     jj_consume_token(USING);
     jj_consume_token(DOMAIN);
     jj_consume_token(QUOTE);
-    label_3:
+    label_4:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case CHAR:{
@@ -103,8 +117,8 @@ repos.add(repo);
         break;
         }
       default:
-        jj_la1[3] = jj_gen;
-        break label_3;
+        jj_la1[4] = jj_gen;
+        break label_4;
       }
       t = jj_consume_token(CHAR);
 builder.append(t.image);
@@ -124,13 +138,13 @@ builder.append(t.image);
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[4];
+  final private int[] jj_la1 = new int[5];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x100,0x6,0x6,0x1000,};
+      jj_la1_0 = new int[] {0x100,0x6,0x100,0x6,0x1000,};
    }
 
   /** Constructor with InputStream. */
@@ -144,7 +158,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -158,7 +172,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -168,7 +182,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -186,7 +200,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -195,7 +209,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -204,7 +218,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 4; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -260,7 +274,7 @@ builder.append(t.image);
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

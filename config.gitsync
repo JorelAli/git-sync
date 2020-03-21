@@ -2,8 +2,8 @@ using domain "https://github.com/AnachronisticTech/";
 
 - Clibgit2
 - Escape-Unity
-- git-sync
-- Psakse-Flutter
++ git-sync
++ Psakse-Flutter
 - Psakse-Windows
 - Stories
 - SwiftGit2
@@ -47,6 +47,10 @@ inside Web {
     - Pool-Tracker-Server-Node.js
     - Video-Library-Client-Vue.js
     - Video-Library-Server-Node.js
+
+    inside Web {
+        + plannerboard_v2
+    }
 }
 
 inside Xcode {

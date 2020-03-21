@@ -7,21 +7,23 @@ public class Subdirectory {
 
 	public String name;
 	public List<Repository> repos;
+	public List<Subdirectory> subDirs;
 	
-	public Subdirectory(String name, List<Repository> repos) {
+	public Subdirectory(String name, List<Repository> repos, List<Subdirectory> subDirs) {
 		this.name = name;
 		this.repos = repos;
+		this.subDirs = subDirs;
 	}
 	
 	public void createAndCloneAll(File parent, String domain) throws IOException, InterruptedException {
 		System.out.println("Creating repositories in directory " + name);
-		boolean existsOneVisible = false;
-		for(Repository repo : repos) {
-			if(!repo.hidden) {
-				existsOneVisible = true;
-				break;
-			}
-		}
+		boolean existsOneVisible = true;
+//		for(Repository repo : repos) {
+//			if(!repo.hidden) {
+//				existsOneVisible = true;
+//				break;
+//			}
+//		}
 		
 		if(existsOneVisible) {
 			File file = new File(parent, name);
@@ -31,6 +33,10 @@ public class Subdirectory {
 			}
 		} else {
 			System.out.println("All repositories in " + name + " are hidden; not creating this subdirectory");
+		}
+		
+		for(Subdirectory d : subDirs) {
+			d.createAndCloneAll(new File(parent, name), domain);
 		}
 		
 		
