@@ -1,0 +1,52 @@
+options {
+	STATIC = false;
+}
+
+PARSER_BEGIN(Parser)
+
+package parser;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+
+@SuppressWarnings("unused")
+public class Parser {
+	
+	public static void parse(String input) throws ParseException {
+		InputStream inputStream = new ByteArrayInputStream(input.getBytes(Charset.forName("UTF-8")));
+		new Parser(inputStream).input();
+	}
+	
+}
+
+PARSER_END(Parser)
+
+//Symbols
+TOKEN : { < OPENBRACKET : "(" > }
+TOKEN : { < CLOSEBRACKET : ")" > }
+
+//Keywords
+TOKEN : { < IF : "if" > }
+
+//Other
+TOKEN : { < VARIABLE : ["A"-"Z", "a"-"z", "_"] (["A"-"Z", "a"-"z", "0"-"9", "_", "."])* (["\'"])* > }
+
+//Whitespace & Comments
+SKIP : { "\n" | "\r" | " " | "\t" }
+SKIP : { < "#" (~["\r", "\n"])* > }
+
+/** Main endpoint */
+void input() : { } {
+  	sample()
+	<EOF>
+}
+
+void sample() : { } {
+  	< OPENBRACKET >
+  	< IF >
+  	< VARIABLE >
+  	< CLOSEBRACKET >
+}
