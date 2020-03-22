@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Subdirectory {
 
-	public String name;
-	public List<Repository> repos;
-	public List<Subdirectory> subDirs;
+	private String name;
+	private List<Repository> repos;
+	private List<Subdirectory> subDirs;
 	
 	public Subdirectory(String name, List<Repository> repos, List<Subdirectory> subDirs) {
 		this.name = name;
@@ -15,31 +15,27 @@ public class Subdirectory {
 		this.subDirs = subDirs;
 	}
 	
+	private int countRepos() {
+		int count = 0;
+		count += subDirs.stream().mapToInt(Subdirectory::countRepos).sum();
+		count += repos.stream().mapToInt(r -> r.isHidden() ? 0 : 1).sum();
+		return count;
+	}
+	
 	public void createAndCloneAll(File parent, String domain) throws IOException, InterruptedException {
-		System.out.println("Creating repositories in directory " + name);
-		boolean existsOneVisible = true;
-//		for(Repository repo : repos) {
-//			if(!repo.hidden) {
-//				existsOneVisible = true;
-//				break;
-//			}
-//		}
-		
-		if(existsOneVisible) {
+		if(countRepos() != 0) {
 			File file = new File(parent, name);
 			file.mkdir();
+			
+			System.out.println("\nCreating repositories in directory " + file.getPath());
 			for(Repository repo : repos) {
 				repo.cloneRepo(file, domain);
 			}
-		} else {
-			System.out.println("All repositories in " + name + " are hidden; not creating this subdirectory");
+			
+			for(Subdirectory d : subDirs) {
+				d.createAndCloneAll(new File(parent, name), domain);
+			}
 		}
-		
-		for(Subdirectory d : subDirs) {
-			d.createAndCloneAll(new File(parent, name), domain);
-		}
-		
-		
 	}
 	
 }

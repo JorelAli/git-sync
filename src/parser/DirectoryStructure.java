@@ -6,9 +6,9 @@ import java.util.List;
 
 public class DirectoryStructure {
 
-	String domain;
-	List<Repository> root;
-	List<Subdirectory> subDirs;
+	private String domain;
+	private List<Repository> root;
+	private List<Subdirectory> subDirs;
 	
 	public DirectoryStructure(String domain, List<Repository> root, List<Subdirectory> subDirs) {
 		this.domain = domain;
@@ -16,14 +16,21 @@ public class DirectoryStructure {
 		this.subDirs = subDirs;
 	}
 	
-	public void cloneAllLocal() throws IOException, InterruptedException {
-		System.out.println("Creating repositories in root directory ");
-		for(Repository r : root) {
-			r.cloneRepo(new File("."), domain);
+	public void cloneAll() throws IOException, InterruptedException {
+		cloneAllLocal();
+		cloneAllSubDirs();
+	}
+	
+	private void cloneAllLocal() throws IOException, InterruptedException {
+		if(root.stream().mapToInt(r -> r.isHidden() ? 0 : 1).sum() != 0) {
+			System.out.println("\nCreating repositories in root directory");
+			for(Repository r : root) {
+				r.cloneRepo(new File("."), domain);
+			}
 		}
 	}
 	
-	public void cloneAllSubDirs() throws IOException, InterruptedException {
+	private void cloneAllSubDirs() throws IOException, InterruptedException {
 		for(Subdirectory s : subDirs) { 
 			s.createAndCloneAll(new File("."), domain);
 		}
