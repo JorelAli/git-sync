@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @SuppressWarnings("unused")
 public class Parser implements ParserConstants {
@@ -17,13 +19,13 @@ public class Parser implements ParserConstants {
         }
 
 /** Main endpoint */
-  final public DirectoryStructure input() throws ParseException {String domain; List<Repository> repos; Subdirectory d; List<Subdirectory> subDirs = new ArrayList<Subdirectory>();
-    domain = domain();
+  final public DirectoryStructure input() throws ParseException {Map<String, String> domains; List<Repository> repos; Subdirectory d; List<Subdirectory> subDirs = new ArrayList<Subdirectory>();
+    domains = domains();
     repos = repos();
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case INSIDE:{
+      case IN:{
         ;
         break;
         }
@@ -35,11 +37,11 @@ public class Parser implements ParserConstants {
 subDirs.add(d);
     }
     jj_consume_token(0);
-{if ("" != null) return new DirectoryStructure(domain, repos, subDirs);}
+{if ("" != null) return new DirectoryStructure(domains, repos, subDirs);}
     throw new Error("Missing return statement in function");
   }
 
-  final public Repository repo() throws ParseException {boolean hidden; Token name;
+  final public Repository repo() throws ParseException {boolean hidden; Token name; Token domain;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case PLUS:{
       jj_consume_token(PLUS);
@@ -56,20 +58,21 @@ hidden = true;
       jj_consume_token(-1);
       throw new ParseException();
     }
+    domain = jj_consume_token(NAME);
     name = jj_consume_token(NAME);
-{if ("" != null) return new Repository(name.image, hidden);}
+{if ("" != null) return new Repository(name.image, domain.image, hidden);}
     throw new Error("Missing return statement in function");
   }
 
   final public Subdirectory inside() throws ParseException {Token t; List<Repository> repos; Subdirectory sd; List<Subdirectory> nested = new ArrayList<Subdirectory>();
-    jj_consume_token(INSIDE);
+    jj_consume_token(IN);
     t = jj_consume_token(NAME);
     jj_consume_token(OPENCBRACKET);
     repos = repos();
     label_2:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case INSIDE:{
+      case IN:{
         ;
         break;
         }
@@ -105,27 +108,46 @@ repos.add(repo);
     throw new Error("Missing return statement in function");
   }
 
-  final public String domain() throws ParseException {StringBuilder builder = new StringBuilder(); Token t;
-    jj_consume_token(USING);
-    jj_consume_token(DOMAIN);
-    jj_consume_token(QUOTE);
+  final public Map<String, String> domains() throws ParseException {StringBuilder builder; Token as; Token t; Map<String, String> domains = new HashMap<String, String>();
     label_4:
     while (true) {
+builder = new StringBuilder();
+      jj_consume_token(USING);
+      jj_consume_token(QUOTE);
+      label_5:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+        case CHAR:{
+          ;
+          break;
+          }
+        default:
+          jj_la1[4] = jj_gen;
+          break label_5;
+        }
+        t = jj_consume_token(CHAR);
+builder.append(t.image);
+      }
+      jj_consume_token(ENDQUOTE);
+      jj_consume_token(AS);
+      as = jj_consume_token(NAME);
+String result = builder.toString();
+                        if(!result.endsWith("/")) {
+                                result = result + "/";
+                        }
+                        System.out.println(as.image + " -> " + result);
+                        domains.put(as.image, result);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case CHAR:{
+      case USING:{
         ;
         break;
         }
       default:
-        jj_la1[4] = jj_gen;
+        jj_la1[5] = jj_gen;
         break label_4;
       }
-      t = jj_consume_token(CHAR);
-builder.append(t.image);
     }
-    jj_consume_token(ENDQUOTE);
-    jj_consume_token(SEMICOLON);
-{if ("" != null) return builder.toString();}
+{if ("" != null) return domains;}
     throw new Error("Missing return statement in function");
   }
 
@@ -138,13 +160,13 @@ builder.append(t.image);
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[5];
+  final private int[] jj_la1 = new int[6];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x100,0x6,0x100,0x6,0x1000,};
+      jj_la1_0 = new int[] {0x40,0x6,0x40,0x6,0x800,0x20,};
    }
 
   /** Constructor with InputStream. */
@@ -158,7 +180,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -172,7 +194,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -182,7 +204,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -200,7 +222,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -209,7 +231,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -218,7 +240,7 @@ builder.append(t.image);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -269,12 +291,12 @@ builder.append(t.image);
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[18];
+    boolean[] la1tokens = new boolean[17];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 6; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -283,7 +305,7 @@ builder.append(t.image);
         }
       }
     }
-    for (int i = 0; i < 18; i++) {
+    for (int i = 0; i < 17; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

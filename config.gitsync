@@ -1,20 +1,25 @@
-using domain "https://github.com/JorelAli/";
+using "https://github.com/JorelAli/" as JA
+using "https://github.com/AnachronisticTech" as AT
 
-- git-sync
+- JA git-sync
 
-inside Minecraft {
-	+ 1.13-Command-API
-	- Chairs
+in Minecraft {
+	+ JA 1.13-Command-API
+	- JA Chairs
 }
 
-inside NixOS {
-	- NixProjects
-	+ NixOS4Noobs
-	- nixos
+in NixOS {
+	- JA NixProjects
+	+ JA NixOS4Noobs
+	- JA nixos
 }
 
-inside ElmProjects {
-	+ Elm-Markdown-Latex
-	- ElmDesktop
-	- Elm-Brainfuck-IDE
+in ElmProjects {
+	+ JA Elm-Markdown-Latex
+	- JA ElmDesktop
+	- JA Elm-Brainfuck-IDE
+}
+
+in Garb {
+	+ AT git-sync
 }

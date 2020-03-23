@@ -19,21 +19,19 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int CLOSECBRACKET = 4;
   /** RegularExpression Id. */
-  int SEMICOLON = 5;
+  int USING = 5;
   /** RegularExpression Id. */
-  int USING = 6;
+  int IN = 6;
   /** RegularExpression Id. */
-  int DOMAIN = 7;
+  int AS = 7;
   /** RegularExpression Id. */
-  int INSIDE = 8;
+  int NAME = 8;
   /** RegularExpression Id. */
-  int NAME = 9;
+  int QUOTE = 9;
   /** RegularExpression Id. */
-  int QUOTE = 10;
+  int ENDQUOTE = 10;
   /** RegularExpression Id. */
-  int ENDQUOTE = 11;
-  /** RegularExpression Id. */
-  int CHAR = 12;
+  int CHAR = 11;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -47,10 +45,9 @@ public interface ParserConstants {
     "\"-\"",
     "\"{\"",
     "\"}\"",
-    "\";\"",
     "\"using\"",
-    "\"domain\"",
-    "\"inside\"",
+    "\"in\"",
+    "\"as\"",
     "<NAME>",
     "\"\\\"\"",
     "<ENDQUOTE>",
@@ -59,7 +56,7 @@ public interface ParserConstants {
     "\"\\r\"",
     "\" \"",
     "\"\\t\"",
-    "<token of kind 17>",
+    "<token of kind 16>",
   };
 
 }

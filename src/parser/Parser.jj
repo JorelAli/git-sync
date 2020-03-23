@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @SuppressWarnings("unused")
 public class Parser {
@@ -29,12 +31,11 @@ TOKEN : { < PLUS : "+" > }
 TOKEN : { < MINUS : "-" > }
 TOKEN : { < OPENCBRACKET : "{" > }
 TOKEN : { < CLOSECBRACKET : "}" > }
-TOKEN : { < SEMICOLON : ";" > }
 
 //Keywords
 TOKEN : { < USING : "using" > }
-TOKEN : { < DOMAIN : "domain" > }
-TOKEN : { < INSIDE : "inside" > }
+TOKEN : { < IN : "in" > }
+TOKEN : { < AS : "as" > }
 
 //Other
 TOKEN : { < NAME : (["A"-"Z", "a"-"z", "0"-"9", "_", "-", "."])+ > }
@@ -50,27 +51,28 @@ SKIP : { "\n" | "\r" | " " | "\t" }
 SKIP : { < "#" (~["\r", "\n"])* > }
 
 /** Main endpoint */
-DirectoryStructure input() : { String domain; List<Repository> repos; Subdirectory d; List<Subdirectory> subDirs = new ArrayList<Subdirectory>(); } {
-  	domain = domain()
+DirectoryStructure input() : { Map<String, String> domains; List<Repository> repos; Subdirectory d; List<Subdirectory> subDirs = new ArrayList<Subdirectory>(); } {
+  	domains = domains()
   	repos = repos()
   	(
   	  d = inside()
   	  { subDirs.add(d); }
   	)*
 	<EOF>
-	{ return new DirectoryStructure(domain, repos, subDirs); }
+	{ return new DirectoryStructure(domains, repos, subDirs); }
 }
 
-Repository repo() : { boolean hidden; Token name;} {
+Repository repo() : { boolean hidden; Token name; Token domain; } {
 	( < PLUS >  { hidden = false; }
 	| < MINUS > { hidden = true; }
 	)
+	domain = < NAME >
 	name = < NAME >
-	{ return new Repository(name.image, hidden); }
+	{ return new Repository(name.image, domain.image, hidden); }
 }
 
 Subdirectory inside() : { Token t; List<Repository> repos; Subdirectory sd; List<Subdirectory> nested = new ArrayList<Subdirectory>(); } {
-	< INSIDE >
+	< IN >
 	t = < NAME >
 	< OPENCBRACKET >
 	repos = repos()
@@ -89,15 +91,24 @@ List<Repository> repos() : { Repository repo; List<Repository> repos = new Array
 	{ return repos; }
 }
 
-String domain() : { StringBuilder builder = new StringBuilder(); Token t;} {
-	< USING >
-	< DOMAIN >
-	< QUOTE >
+Map<String, String> domains() : { StringBuilder builder; Token as; Token t; Map<String, String> domains = new HashMap<String, String>(); } {
 	(
-	  t = < CHAR >
-	  { builder.append(t.image); }
-	)*
-	< ENDQUOTE >
-	< SEMICOLON >
-	{ return builder.toString(); }
+	  	{ builder = new StringBuilder(); }	  	< USING >
+		< QUOTE >
+		(
+		  t = < CHAR >
+		  { builder.append(t.image); }
+		)*
+		< ENDQUOTE >
+		< AS >
+		as = < NAME >
+		{
+		  	String result = builder.toString();
+		  	if(!result.endsWith("/")) {
+				result = result + "/";
+		  	}
+		  	domains.put(as.image, result);
+		}
+	)+
+	{ return domains; }
 }

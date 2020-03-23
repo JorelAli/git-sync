@@ -8,29 +8,29 @@ _git-sync_ is a git repository cloning system which can clone repositories in a 
 To use _git-sync_, you will first need a `config.gitsync` file in the directory where files will be stored. An example of the `config.gitsync` file is below:
 
 ```
-using domain "https://github.com/JorelAli/";
+using "https://github.com/JorelAli/" as JA
 
-- git-sync
+- JA git-sync
 
-inside Minecraft {
-    + 1.13-Command-API
-    - Chairs
+in Minecraft {
+    + JA 1.13-Command-API
+    - JA Chairs
 }
 
-inside NixOS {
-    - NixProjects
-    + NixOS4Noobs
-    - nixos
+in NixOS {
+    - JA NixProjects
+    + JA NixOS4Noobs
+    - JA nixos
 }
 
-inside ElmProjects {
-    + Elm-Markdown-Latex
-    - ElmDesktop
-    - Elm-Brainfuck-IDE
+in ElmProjects {
+    + JA Elm-Markdown-Latex
+    - JA ElmDesktop
+    - JA Elm-Brainfuck-IDE
 }
 ```
 
-In this example, we state the domain in which all repositories will be under. In this case, we have repositories linked via `https://github.com/JorelAli/git-sync`, so the domain is `https://github.com/JorelAli/` (note the trailing `/`).
+In this example, we state the domain in which all repositories will be under. In this case, we have repositories linked via `https://github.com/JorelAli/git-sync`, so the domain is `https://github.com/JorelAli/` (note the trailing `/`). We also name this domain as `JA`, which is used with the corresponding repository.
 
 We then declare our repositories to include. If we want to clone the repository, it is denoted with `+`. Likewise, if we _don't_ want to clone the repository, it is denoted with `-`. This is useful if you want to clone a specific repository on a machine, but don't want to clone that repository on another machine, whilst still maintaining the entire structure.
 
@@ -39,9 +39,9 @@ Finally, we can declare _where_ to store each of these repositories. In the exam
 ```
 ...
 
-inside ElmProjects {
-    inside OtherFolder {
-        + Elm-Markdown-Latex
+in ElmProjects {
+    in OtherFolder {
+        + JA Elm-Markdown-Latex
     }
 }
 ```
